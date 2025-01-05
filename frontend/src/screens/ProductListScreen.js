@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Row, Col, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -12,11 +12,9 @@ import {
   createProduct,
 } from '../actions/productActions';
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
-import { Link } from 'react-router-dom';
 
 const ProductListScreen = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1;
-
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.productList);
@@ -65,7 +63,7 @@ const ProductListScreen = ({ history, match }) => {
   ]);
 
   const deleteHandler = (id) => {
-    if (window.confirm('Are you sure')) {
+    if (window.confirm('Are you sure you want to delete this product?')) {
       dispatch(deleteProduct(id));
     }
   };
@@ -75,77 +73,70 @@ const ProductListScreen = ({ history, match }) => {
   };
 
   return (
-    <Container>
-      <Row className="align-items-center">
-        <Col>
-          {userInfo.isAdminSeller ? <h1>My Products</h1> : <h1>Products</h1>}
-        </Col>
-        <Col className="text-right">
-          <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create Product
-          </Button>
-        </Col>
-      </Row>
-      {loadingDelete && <Loader />}
-      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
-      {loadingCreate && <Loader />}
-      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : products.length === 0 ? (
-        <>
-          <Message>
-            You haven't added any products.{' '}
-            <Link style={{ textDecoration: 'underline' }} to="/">
-              Go Back
+    <div className="product-list-screen">
+      <Container>
+        <div className="product-list-header">
+          <h1>{userInfo.isAdminSeller ? 'My Menu Items' : 'Menu Management'}</h1>
+          <button className="create-product-btn" onClick={createProductHandler}>
+            <i className="fas fa-plus"></i> Add New Item
+          </button>
+        </div>
+
+        {loadingDelete && <Loader />}
+        {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+        {loadingCreate && <Loader />}
+        {errorCreate && <Message variant="danger">{errorCreate}</Message>}
+
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : products.length === 0 ? (
+          <div className="empty-products">
+            <i className="fas fa-coffee"></i>
+            <p>No items in your menu yet</p>
+            <Link to="/" className="back-link">
+              Return to Homepage
             </Link>
-          </Message>
-        </>
-      ) : (
-        <>
-          <Table striped bordered hover responsive className="table-sm">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
+          </div>
+        ) : (
+          <>
+            <div className="products-grid">
               {products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>&#8377;{product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
-                  <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                      <Button variant="light" className="btn-sm">
-                        <i className="fas fa-edit"></i>
-                      </Button>
-                    </LinkContainer>
-                    <Button
-                      variant="danger"
-                      className="btn-sm"
+                <div key={product._id} className="product-card">
+                  <div className="product-image">
+                    <img src={product.image} alt={product.name} />
+                  </div>
+                  <div className="product-info">
+                    <h3>{product.name}</h3>
+                    <p className="price">₹{product.price}</p>
+                    <p className="category">{product.category}</p>
+                    <p className="brand">{product.brand}</p>
+                  </div>
+                  <div className="product-actions">
+                    <Link
+                      to={`/admin/product/${product._id}/edit`}
+                      className="edit-btn"
+                    >
+                      <i className="fas fa-edit"></i>
+                      Edit
+                    </Link>
+                    <button
+                      className="delete-btn"
                       onClick={() => deleteHandler(product._id)}
                     >
                       <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
+                      Delete
+                    </button>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </Table>
-          <Paginate pages={pages} page={page} isAdmin={true} />
-        </>
-      )}
-    </Container>
+            </div>
+            <Paginate pages={pages} page={page} isAdmin={true} />
+          </>
+        )}
+      </Container>
+    </div>
   );
 };
 

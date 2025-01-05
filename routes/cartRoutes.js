@@ -1,32 +1,16 @@
 import express from 'express';
-import {
-  addToCart,
-  removeFromCart,
-  clearCart,
-  saveShippingAddress,
-  savePaymentMethod,
-  getCart,
-} from '../controllers/cartController.js';
+import { addItemToCart, removeItemFromCart, getCartItems } from '../controllers/cartController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Add item to cart
-router.post('/', protect, addToCart);
+// Route to get the cart items for the logged-in user
+router.get('/', protect, getCartItems);
 
-// Remove item from cart
-router.delete('/:id', protect, removeFromCart);
+// Route to add an item to the cart
+router.post('/add', protect, addItemToCart);
 
-// Clear all items from cart
-router.delete('/', protect, clearCart);
-
-// Save shipping address
-router.post('/shipping', protect, saveShippingAddress);
-
-// Save payment method
-router.post('/payment', protect, savePaymentMethod);
-
-// Get current user's cart
-router.get('/', protect, getCart);
+// Route to remove an item from the cart
+router.delete('/remove/:id', protect, removeItemFromCart);
 
 export default router;

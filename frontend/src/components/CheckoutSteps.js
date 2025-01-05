@@ -4,46 +4,86 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
   return (
-    <Nav className='justify-content-center mb-4'>
-      <Nav.Item>
+    <Nav className="checkout-steps">
+      <div className="step-item">
         {step1 ? (
-          <LinkContainer to='/login'>
-            <Nav.Link>Sign In</Nav.Link>
+          <LinkContainer to="/login">
+            <Nav.Link>
+              <div className="step-content">
+                <div className="step-number completed">1</div>
+                <span>Welcome</span>
+              </div>
+            </Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Sign In</Nav.Link>
+          <Nav.Link disabled>
+            <div className="step-content">
+              <div className="step-number">1</div>
+              <span>Welcome</span>
+            </div>
+          </Nav.Link>
         )}
-      </Nav.Item>
+      </div>
 
-      <Nav.Item>
+      <div className="step-item">
         {step2 ? (
-          <LinkContainer to='/shipping'>
-            <Nav.Link>Shipping</Nav.Link>
+          <LinkContainer to="/shipping">
+            <Nav.Link>
+              <div className="step-content">
+                <div className="step-number completed">2</div>
+                <span>Delivery</span>
+              </div>
+            </Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Shipping</Nav.Link>
+          <Nav.Link disabled>
+            <div className="step-content">
+              <div className="step-number">2</div>
+              <span>Delivery</span>
+            </div>
+          </Nav.Link>
         )}
-      </Nav.Item>
+      </div>
 
-      <Nav.Item>
+      <div className="step-item">
         {step3 ? (
-          <LinkContainer to='/payment'>
-            <Nav.Link>Payment</Nav.Link>
+          <LinkContainer to="/payment">
+            <Nav.Link>
+              <div className="step-content">
+                <div className="step-number completed">3</div>
+                <span>Payment</span>
+              </div>
+            </Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Payment</Nav.Link>
+          <Nav.Link disabled>
+            <div className="step-content">
+              <div className="step-number">3</div>
+              <span>Payment</span>
+            </div>
+          </Nav.Link>
         )}
-      </Nav.Item>
+      </div>
 
-      <Nav.Item>
+      <div className="step-item">
         {step4 ? (
-          <LinkContainer to='/placeorder'>
-            <Nav.Link>Place Order</Nav.Link>
+          <LinkContainer to="/placeorder">
+            <Nav.Link>
+              <div className="step-content">
+                <div className="step-number completed">4</div>
+                <span>Confirm Order</span>
+              </div>
+            </Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Place Order</Nav.Link>
+          <Nav.Link disabled>
+            <div className="step-content">
+              <div className="step-number">4</div>
+              <span>Confirm Order</span>
+            </div>
+          </Nav.Link>
         )}
-      </Nav.Item>
+      </div>
     </Nav>
   )
 }

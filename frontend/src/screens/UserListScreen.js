@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listUsers, deleteUser } from '../actions/userActions';
-import { Link } from 'react-router-dom';
 
 const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -28,81 +27,101 @@ const UserListScreen = ({ history }) => {
   }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
-    if (window.confirm('Are you sure')) {
+    if (window.confirm('Are you sure you want to remove this user?')) {
       dispatch(deleteUser(id));
     }
   };
 
   return (
-    <Container>
-      <h1>Users</h1>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : users.length === 0 ? (
-        <>
-          <Message>
-            No users till now.{' '}
-            <Link style={{ textDecoration: 'underline' }} to="/">
-              Go Back
+    <div className="user-list-screen">
+      <Container>
+        <div className="user-list-header">
+          <h1>User Management</h1>
+          <p>Manage your café's user accounts</p>
+        </div>
+
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : users.length === 0 ? (
+          <div className="empty-users">
+            <i className="fas fa-users"></i>
+            <p>No registered users yet</p>
+            <Link to="/" className="back-link">
+              Return to Homepage
             </Link>
-          </Message>
-        </>
-      ) : (
-        <Table striped bordered hover responsive className="table-sm">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>EMAIL</th>
-              <th>ADMIN SELLER</th>
-              <th>ADMIN</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
+          </div>
+        ) : (
+          <div className="users-container">
             {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
-                <td>
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
-                </td>
-                <td>
-                  {user.isAdminSeller ? (
-                    <i className="fas fa-check" style={{ color: 'green' }}></i>
-                  ) : (
-                    <i className="fas fa-times" style={{ color: 'red' }}></i>
-                  )}
-                </td>
-                <td>
-                  {user.isAdmin ? (
-                    <i className="fas fa-check" style={{ color: 'green' }}></i>
-                  ) : (
-                    <i className="fas fa-times" style={{ color: 'red' }}></i>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                    <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit"></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
+              <div key={user._id} className="user-card">
+                <div className="user-info">
+                  <div className="user-header">
+                    <div className="user-avatar">
+                      <i className="fas fa-user"></i>
+                    </div>
+                    <div className="user-details">
+                      <h3>{user.name}</h3>
+                      <a href={`mailto:${user.email}`} className="user-email">
+                        <i className="fas fa-envelope"></i>
+                        {user.email}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="user-roles">
+                    <div className="role-badge">
+                      <span>Admin Seller:</span>
+                      {user.isAdminSeller ? (
+                        <div className="status-badge success">
+                          <i className="fas fa-check-circle"></i>
+                          Yes
+                        </div>
+                      ) : (
+                        <div className="status-badge pending">
+                          <i className="fas fa-times-circle"></i>
+                          No
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="role-badge">
+                      <span>Admin:</span>
+                      {user.isAdmin ? (
+                        <div className="status-badge success">
+                          <i className="fas fa-check-circle"></i>
+                          Yes
+                        </div>
+                      ) : (
+                        <div className="status-badge pending">
+                          <i className="fas fa-times-circle"></i>
+                          No
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="user-actions">
+                  <Link to={`/admin/user/${user._id}/edit`} className="edit-btn">
+                    <i className="fas fa-edit"></i>
+                    Edit User
+                  </Link>
+                  <button
+                    className="delete-btn"
                     onClick={() => deleteHandler(user._id)}
                   >
                     <i className="fas fa-trash"></i>
-                  </Button>
-                </td>
-              </tr>
+                    Remove User
+                  </button>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </Table>
-      )}
-    </Container>
+          </div>
+        )}
+      </Container>
+    </div>
   );
 };
 

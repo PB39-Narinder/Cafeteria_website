@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const WifiCoworking = () => {
   const [name, setName] = useState('');
@@ -9,11 +9,9 @@ const WifiCoworking = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Mockup for form submission (e.g., call an API or handle in your app)
     if (name && email) {
       setShowSuccess(true);
       setShowError(false);
-      // Here you would send the data to your backend or API
       console.log('Wi-Fi pass requested for:', name, email);
     } else {
       setShowError(true);
@@ -22,61 +20,90 @@ const WifiCoworking = () => {
   };
 
   return (
-    <Container className="my-5">
-      <Row>
-        <Col md={6} className="text-center">
-          <i className="fas fa-wifi fa-5x mb-4"></i>
-        </Col>
-        <Col md={6}>
-          <h2>Free Wi-Fi & Co-working</h2>
-          <p>
-            Enjoy a quiet and comfortable workspace with complimentary Wi-Fi, perfect for remote work, meetings, or simply unwinding with a coffee.
-          </p>
-          <p>
-            Whether you're working on a project, attending virtual meetings, or just browsing the internet, our high-speed Wi-Fi and cozy co-working spaces provide the ideal environment to get things done.
-          </p>
-          <h4>Why Choose Our Co-working Space?</h4>
-          <ul>
-            <li>Fast and reliable Wi-Fi</li>
-            <li>Comfortable seating with power outlets</li>
-            <li>Perfect for solo work, group meetings, and creative collaboration</li>
-            <li>Enjoy fresh coffee, snacks, and baked goods while you work</li>
-          </ul>
+    <div className="cafe-wifi-section">
+      <Container>
+        <Row className="align-items-center">
+          <Col lg={6} className="wifi-content">
+            <div className="wifi-header">
+              <div className="icon-wrapper">
+                <i className="fas fa-wifi"></i>
+              </div>
+              <h1>Wi-Fi & Co-working Space</h1>
+              <p className="subtitle">Your perfect workspace away from home</p>
+            </div>
 
-          <h4>Get Your Wi-Fi Pass</h4>
-          <p>To access our high-speed Wi-Fi, please fill out the form below to receive your Wi-Fi pass:</p>
+            <div className="features-grid">
+              <div className="feature-item">
+                <i className="fas fa-bolt"></i>
+                <h4>High-Speed Internet</h4>
+                <p>Fast and reliable Wi-Fi connection</p>
+              </div>
+              <div className="feature-item">
+                <i className="fas fa-plug"></i>
+                <h4>Power Outlets</h4>
+                <p>Accessible charging points</p>
+              </div>
+              <div className="feature-item">
+                <i className="fas fa-coffee"></i>
+                <h4>Fresh Coffee</h4>
+                <p>Complimentary coffee service</p>
+              </div>
+              <div className="feature-item">
+                <i className="fas fa-users"></i>
+                <h4>Community</h4>
+                <p>Vibrant co-working atmosphere</p>
+              </div>
+            </div>
+          </Col>
 
-          {showSuccess && <Alert variant="success">Wi-Fi pass request submitted successfully!</Alert>}
-          {showError && <Alert variant="danger">Please fill in both fields to request the Wi-Fi pass.</Alert>}
+          <Col lg={6}>
+            <div className="wifi-form-container">
+              <h2>Get Your Wi-Fi Pass</h2>
+              <p>Fill out the form below to receive your complimentary Wi-Fi access</p>
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="name">
-              <Form.Label>Your Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Group>
+              {showSuccess && (
+                <div className="alert-success">
+                  Wi-Fi pass request submitted successfully! Check your email.
+                </div>
+              )}
+              {showError && (
+                <div className="alert-error">
+                  Please fill in all fields to request the Wi-Fi pass.
+                </div>
+              )}
 
-            <Form.Group controlId="email">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Group>
+              <Form onSubmit={handleSubmit} className="wifi-form">
+                <Form.Group className="form-group">
+                  <Form.Label>Your Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-input"
+                  />
+                </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3">
-              Request Wi-Fi Pass
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+                <Form.Group className="form-group">
+                  <Form.Label>Email Address</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="form-input"
+                  />
+                </Form.Group>
+
+                <Button type="submit" className="submit-btn">
+                  Request Wi-Fi Pass
+                </Button>
+              </Form>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

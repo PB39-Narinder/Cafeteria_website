@@ -22,51 +22,57 @@ import SingleBlogScreen from './screens/SingleBlogScreen';
 import CustomCoffee from './screens/CustomCoffee';  // Import the service screen
 import FreshBakes from './screens/FreshBakes';  // Import the service screen
 import WifiCoworking from './screens/WifiCoworking';  // Import the service screen
+import ErrorBoundary from './components/ErrorBoundary';
+import { CartProvider } from './context/CartContext';
 
 const App = () => {
   return (
-    <Router>
-      <Header />
-      <main className="py-3">
-        <Switch>
-          <Route path="/order/:id" component={OrderScreen} />
-          <Route path="/shipping" component={ShippingScreen} />
-          <Route path="/payment" component={PaymentScreen} />
-          <Route path="/placeorder" component={PlaceOrderScreen} />
-          <Route path="/login" component={LoginScreen} />
-          <Route path="/register" component={RegisterScreen} />
-          <Route path="/profile" component={ProfileScreen} />
-          <Route path="/blog" exact component={BlogScreen} />
-          <Route path="/blog/:slug" exact component={SingleBlogScreen} />
-          <Route path="/product/:id" component={ProductScreen} />
-          <Route path="/cart/:id?" component={CartScreen} />
-          <Route path="/admin/userlist" component={UserListScreen} />
-          <Route path="/admin/user/:id/edit" component={UserEditScreen} />
-          <Route path="/admin/productlist" component={ProductListScreen} exact />
-          <Route
-            path="/admin/productlist/:pageNumber"
-            component={ProductListScreen}
-            exact
-          />
-          <Route path="/admin/product/:id/edit" component={ProductEditScreen} />
-          <Route path="/admin/orderlist" component={OrderListScreen} />
-          <Route path="/search/:keyword" component={HomeScreen} exact />
-          <Route path="/page/:pageNumber" component={HomeScreen} exact />
-          <Route
-            path="/search/:keyword/page/:pageNumber"
-            component={HomeScreen}
-            exact
-          />
-          <Route path="/" component={HomeScreen} exact />
+    <ErrorBoundary>
+      <CartProvider>
+        <Router>
+          <Header />
+          <main className="py-3">
+            <Switch>
+              <Route path="/order/:id" component={OrderScreen} />
+              <Route path="/shipping" component={ShippingScreen} />
+              <Route path="/payment" component={PaymentScreen} />
+              <Route path="/placeorder" component={PlaceOrderScreen} />
+              <Route path="/login" component={LoginScreen} />
+              <Route path="/register" component={RegisterScreen} />
+              <Route path="/profile" component={ProfileScreen} />
+              <Route path="/blog" exact component={BlogScreen} />
+              <Route path="/blog/:slug" exact component={SingleBlogScreen} />
+              <Route path="/product/:id" component={ProductScreen} />
+              <Route path="/cart/:id?" component={CartScreen} />
+              <Route path="/admin/userlist" component={UserListScreen} />
+              <Route path="/admin/user/:id/edit" component={UserEditScreen} />
+              <Route path="/admin/productlist" component={ProductListScreen} exact />
+              <Route
+                path="/admin/productlist/:pageNumber"
+                component={ProductListScreen}
+                exact
+              />
+              <Route path="/admin/product/:id/edit" component={ProductEditScreen} />
+              <Route path="/admin/orderlist" component={OrderListScreen} />
+              <Route path="/search/:keyword" component={HomeScreen} exact />
+              <Route path="/page/:pageNumber" component={HomeScreen} exact />
+              <Route
+                path="/search/:keyword/page/:pageNumber"
+                component={HomeScreen}
+                exact
+              />
+              <Route path="/" component={HomeScreen} exact />
 
-          {/* Service Routes */}
-          <Route path="/services/custom-coffee" component={CustomCoffee} />
-          <Route path="/services/fresh-bakes" component={FreshBakes} />
-          <Route path="/services/wifi-coworking" component={WifiCoworking} />
-        </Switch>
-      </main>
-      <Footer />
-    </Router>
+              {/* Service Routes */}
+              <Route path="/services/custom-coffee" component={CustomCoffee} />
+              <Route path="/services/fresh-bakes" component={FreshBakes} />
+              <Route path="/services/wifi-coworking" component={WifiCoworking} />
+            </Switch>
+          </main>
+          <Footer />
+        </Router>
+      </CartProvider>
+    </ErrorBoundary>
   );
 };
 

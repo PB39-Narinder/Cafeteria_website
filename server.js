@@ -11,14 +11,14 @@ import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import cartRoutes from "./routes/cartRoutes.js";
+const app = express()
 
 
 
 dotenv.config()
-
+app.use(express.json()); // For parsing JSON request bodies
 connectDB()
 
-const app = express()
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))

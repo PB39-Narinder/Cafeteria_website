@@ -1,6 +1,6 @@
 {
   "short_name": "CaféDelight",
-  "name": "CaféDelight - Cafeteria website",
+  "name": "CaféDelight - Where Flavors Meet Comfort",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,8 +10,7 @@
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any maskable"
+      "sizes": "192x192"
     },
     {
       "src": "logo512.png",
@@ -19,8 +18,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#2b1810",
   "background_color": "#ffffff"
 }

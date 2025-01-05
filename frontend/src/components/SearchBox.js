@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 const SearchBox = ({ history }) => {
   const [keyword, setKeyword] = useState('');
@@ -14,17 +14,19 @@ const SearchBox = ({ history }) => {
   };
 
   return (
-    <Form onSubmit={submitHandler} className="flex-gap" inline>
-      <Form.Control
-        type="text"
-        name="q"
-        onChange={(e) => setKeyword(e.target.value)}
-        placeholder="Search Products..."
-        className="mr-sm-2 ml-sm-5"
-      ></Form.Control>
-      <Button type="submit" variant="outline-warning" className="p-2">
-        Search
-      </Button>
+    <Form onSubmit={submitHandler} className="search-form">
+      <div className="search-input-group">
+        <Form.Control
+          type="text"
+          name="q"
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="Search for coffee, pastries..."
+          className="search-input"
+        />
+        <button type="submit" className="search-btn">
+          <i className="fas fa-search"></i>
+        </button>
+      </div>
     </Form>
   );
 };

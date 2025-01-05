@@ -1,27 +1,62 @@
 import mongoose from 'mongoose';
 
-const cartSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-  cartItems: [
-    {
-      product: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Product' },
-      name: { type: String, required: true },
-      image: { type: String, required: true },
-      price: { type: Number, required: true },
-      quantity: { type: Number, required: true, default: 1 },
+const cartSchema = mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
     },
-  ],
-  shippingAddress: {
-    address: { type: String },
-    city: { type: String },
-    postalCode: { type: String },
-    country: { type: String },
+    cartItems: [
+      {
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: 'Product',
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+        image: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          default: 1,
+        },
+      },
+    ],
+    totalPrice: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  paymentMethod: { type: String },
-}, {
-  timestamps: true,
+  {
+    timestamps: true,
+  }
+);
+
+cartSchema.pre('save', function (next) {
+  let total = 0;
+  this.cartItems.forEach(item => {
+    total += item.price * item.quantity;
+  });
+  this.totalPrice = total;
+  next();
 });
 
 const Cart = mongoose.model('Cart', cartSchema);
 
-export default Cart;  // Use ESM export
+export default Cart; // ES module export

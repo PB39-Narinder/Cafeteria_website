@@ -5,9 +5,9 @@ const connectDB = async () => {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // Optionally you can add other options like:
-      // useFindAndModify: false,
-      // useCreateIndex: true, // (this may not be necessary anymore)
+      // Connection Pooling Options (Optional):
+      serverSelectionTimeoutMS: 5000, // Adjust as needed (connection timeout)
+      socketTimeoutMS: 45000,           // Adjust as needed (socket timeout)
     });
 
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);

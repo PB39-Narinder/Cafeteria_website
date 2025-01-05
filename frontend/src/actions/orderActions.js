@@ -39,7 +39,22 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.post(`/api/orders`, order, config)
+    const validatedOrder = {
+      ...order,
+      orderItems: order.orderItems.map(item => ({
+        ...item,
+        qty: Number(item.qty) || 1,
+        price: Number(item.price) || 0,
+        product: item.product,
+        name: item.name,
+        image: item.image
+      })),
+      totalPrice: Number(order.totalPrice) || 0,
+      shippingPrice: Number(order.shippingPrice) || 0,
+      itemsPrice: Number(order.itemsPrice) || 0
+    }
+
+    const { data } = await axios.post('/api/orders', validatedOrder, config)
 
     dispatch({
       type: ORDER_CREATE_SUCCESS,
@@ -51,16 +66,12 @@ export const createOrder = (order) => async (dispatch, getState) => {
     })
     localStorage.removeItem('cartItems')
   } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
-    }
     dispatch({
       type: ORDER_CREATE_FAIL,
-      payload: message,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     })
   }
 }

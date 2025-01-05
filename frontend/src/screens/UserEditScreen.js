@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -39,6 +39,7 @@ const UserEditScreen = ({ match, history }) => {
         setName(user.name);
         setEmail(user.email);
         setIsAdmin(user.isAdmin);
+        setIsAdminSeller(user.isAdminSeller);
       }
     }
   }, [dispatch, history, userId, user, successUpdate]);
@@ -49,65 +50,88 @@ const UserEditScreen = ({ match, history }) => {
   };
 
   return (
-    <Container>
-      <Link to="/admin/userlist" className="btn btn-light my-3">
-        Go Back
-      </Link>
-      <FormContainer>
-        <h1>Edit User</h1>
-        {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
-        ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="name"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+    <div className="user-edit-screen">
+      <Container>
+        <Link to="/admin/userlist" className="back-btn">
+          <i className="fas fa-arrow-left"></i> Back to Users
+        </Link>
 
-            <Form.Group controlId="email">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+        <FormContainer>
+          <div className="edit-header">
+            <div className="user-icon">
+              <i className="fas fa-user-edit"></i>
+            </div>
+            <h1>Edit User</h1>
+            <p>Update user information and permissions</p>
+          </div>
 
-            <Form.Group controlId="isadmin">
-              <Form.Check
-                type="checkbox"
-                label="Is Admin Seller"
-                checked={isAdminSeller}
-                onChange={(e) => setIsAdminSeller(e.target.checked)}
-              ></Form.Check>
-            </Form.Group>
+          {loadingUpdate && <Loader />}
+          {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+          
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
+            <Form onSubmit={submitHandler} className="edit-form">
+              <div className="form-group">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
 
-            <Form.Group controlId="isadmin">
-              <Form.Check
-                type="checkbox"
-                label="Is Admin"
-                checked={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.checked)}
-              ></Form.Check>
-            </Form.Group>
+              <div className="form-group">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
 
-            <Button type="submit" variant="primary">
-              Update
-            </Button>
-          </Form>
-        )}
-      </FormContainer>
-    </Container>
+              <div className="permissions-section">
+                <h3>User Permissions</h3>
+                <div className="permissions-grid">
+                  <div className="permission-item">
+                    <Form.Check
+                      type="checkbox"
+                      label="Admin Seller"
+                      id="isAdminSeller"
+                      checked={isAdminSeller}
+                      onChange={(e) => setIsAdminSeller(e.target.checked)}
+                    />
+                    <p>Can manage products and view orders</p>
+                  </div>
+
+                  <div className="permission-item">
+                    <Form.Check
+                      type="checkbox"
+                      label="Admin"
+                      id="isAdmin"
+                      checked={isAdmin}
+                      onChange={(e) => setIsAdmin(e.target.checked)}
+                    />
+                    <p>Full administrative access</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="update-btn">
+                  Update User
+                  <i className="fas fa-check"></i>
+                </button>
+              </div>
+            </Form>
+          )}
+        </FormContainer>
+      </Container>
+    </div>
   );
 };
 

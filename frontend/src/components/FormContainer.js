@@ -1,16 +1,18 @@
-import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import React from 'react';
+import { Container } from 'react-bootstrap';
 
 const FormContainer = ({ children }) => {
   return (
-    <Container>
-      <Row className='justify-content-md-center'>
-        <Col xs={12} md={6}>
-          {children}
-        </Col>
-      </Row>
-    </Container>
-  )
-}
+    <div className="form-container">
+      <Container>
+        <div className="form-wrapper">
+          <div className="form-content">
+            {children}
+          </div>
+        </div>
+      </Container>
+    </div>
+  );
+};
 
-export default FormContainer
+export default FormContainer;

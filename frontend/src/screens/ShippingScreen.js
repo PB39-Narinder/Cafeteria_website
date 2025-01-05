@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
@@ -6,21 +6,33 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { saveShippingAddress } from '../actions/cartActions';
 
 const ShippingScreen = ({ history }) => {
+  const dispatch = useDispatch();
+
+  // Get cart state and shippingAddress
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
 
-  const [address, setAddress] = useState(shippingAddress.address || '');
-  const [city, setCity] = useState(shippingAddress.city || '');
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
-  const [country, setCountry] = useState(shippingAddress.country || 'India');  // Default to India
+  // If shippingAddress is not yet present, initialize form fields with empty string
+  const [address, setAddress] = useState(shippingAddress?.address || '');
+  const [city, setCity] = useState(shippingAddress?.city || '');
+  const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || '');
+  const [country, setCountry] = useState(shippingAddress?.country || 'India'); // Default to India
 
-  const dispatch = useDispatch();
+  // Redirect to login if user is not authenticated
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login?redirect=shipping'); // Redirect to login if user is not logged in
+    }
+  }, [history, userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // Save the shipping address in the redux store
+    // Dispatch saveShippingAddress action with the form data
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    // After saving the address, move to the next step (payment screen)
+    // Redirect to the payment screen
     history.push('/payment');
   };
 

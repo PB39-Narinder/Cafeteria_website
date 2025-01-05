@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Card, Button } from 'react-bootstrap';
 import Rating from './Rating';
 
 const Product = ({ product }) => {
@@ -10,42 +9,62 @@ const Product = ({ product }) => {
   };
 
   return (
-    <Card className="my-3 p-3 rounded product_card">
-      <Link to={`/product/${product._id}`}>
-        <img
-          className="product_card_img"
-          src={product.image}
-          alt={product.name}
-        />
-      </Link>
-
-      <Card.Body>
+    <div className="cafe-product-card">
+      <div className="cafe-product-image">
         <Link to={`/product/${product._id}`}>
-          <Card.Title className="product_card_title" as="div">
-            <strong>{product.name}</strong>
-          </Card.Title>
+          <img src={product.image} alt={product.name} />
         </Link>
+        {product.countInStock === 0 && (
+          <span className="sold-out-badge">Sold Out</span>
+        )}
+        <div className="quick-view-btn">
+          <Link to={`/product/${product._id}`}>
+            <i className="fas fa-eye"></i>
+          </Link>
+        </div>
+      </div>
 
-        <Card.Text as="p">Sold by: {product.brand}</Card.Text>
+      <div className="cafe-product-info">
+        <div className="product-header">
+          <Link to={`/product/${product._id}`}>
+            <h3 className="product-name">{product.name}</h3>
+          </Link>
+          <p className="brand-name">by {product.brand}</p>
+        </div>
+        
+        <div className="product-details">
+          <div className="rating-container">
+            <Rating
+              value={product.rating}
+              text={`${product.numReviews} reviews`}
+            />
+          </div>
 
-        <Card.Text as="div">
-          <Rating
-            value={product.rating}
-            text={`${product.numReviews} reviews`}
-          />
-        </Card.Text>
-
-        <Card.Text as="h3">&#8377;{product.price}</Card.Text>
-        <Button
-          onClick={addToCartHandler}
-          className="btn-block"
-          type="button"
-          disabled={product.countInStock === 0}
-        >
-          {product.countInStock !== 0 ? 'Add To Cart' : 'Sold Out!'}
-        </Button>
-      </Card.Body>
-    </Card>
+          <div className="price-cart">
+            <div className="price-box">
+              <span className="price">₹{product.price}</span>
+              {product.countInStock > 0 && (
+                <span className="stock-status">In Stock</span>
+              )}
+            </div>
+            <button
+              onClick={addToCartHandler}
+              className="add-to-cart-btn"
+              disabled={product.countInStock === 0}
+            >
+              {product.countInStock !== 0 ? (
+                <>
+                  <i className="fas fa-shopping-bag"></i>
+                  <span>Add to Cart</span>
+                </>
+              ) : (
+                'Sold Out'
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
